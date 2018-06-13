@@ -1,9 +1,12 @@
 @extends('layouts.app')
 
 @section('content')
-    <div id="mainBottom" class="col-md-12">
+<div class="row">
+    <div id="main-bottom" class="col-md-12">
         <div class="contact">
             <form class="contactus-form" onsubmit="javascript: void(0)">
+                <h1>Contact Us</h1>
+                <hr/>
                 <div class="form-group">
                     <label class="white-label" for="inputName">Full name</label>
                     <input type="text" class="form-control" id="inputName" placeholder="Enter your full name...">
@@ -21,4 +24,5 @@
             </form>
         </div>
     </div>
+</div>
 @endsection

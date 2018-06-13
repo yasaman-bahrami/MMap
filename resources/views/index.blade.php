@@ -1,14 +1,15 @@
 @extends('layouts.app')
 
 @section('content')
-<div id="mainTop" class="row">
+<div id="main-top" class="row">
     <div class="col-md-10">
         <div id="map" class="jumbotron"></div>
         <div id="info" class="info">
             <button type="button" class="close" data-dismiss="info" onclick="hideInfo();">&times;</button>
-            <div id="infoBody"></div>
-            <audio style="width: 100%">
-                <source type="audio/mp3" src="musics/2-Walter Burry-caplin.mp3" />
+            <div id="info-title"></div>
+            <p id="info-body"></p>
+            <audio style="width: 100%" controls>
+                <source id="audio-src" type="audio/mp3" src=""/>
             </audio>
         </div>
     </div>
@@ -16,91 +17,154 @@
         <div id="search" class="row">
             <div class="col-md-12">
                 @if (count($tags) > 0)
-                    <div class="form-group">
-                        <div class="input-group mb-3">
-                            <input
-                                id="tagSearchInput"
-                                type="text"
-                                class="form-control"
-                                placeholder="Search Tags"
-                                onChange="handleTagInputChange()"
-                            >
-                            <div class="input-group-append">
-                                <button class=" btn input-group-text searchStoryByTags">
-                                    <i class="fa fa-search"></i>
-                                </button>
-                            </div>
+                <div class="form-group">
+                    <div class="input-group mb-3">
+                        <input
+                            id="tag-search-input"
+                            type="text"
+                            class="form-control"
+                            placeholder="Search Tags"
+                            onChange="handleTagInputChange()"
+                        >
+                        <div class="input-group-append">
+                            <button class=" btn input-group-text">
+                                <i class="fa fa-search"></i>
+                            </button>
                         </div>
                     </div>
-                <br/>
-                <table id="filterTable" class="col-md-12">
-                    <tbody id="tagTableBody">
-                    @foreach ($tags as $tag)
-                        <tr>
-                            <!-- Tag Name -->
-                            <td class="btn btn-primary tags">
-                                {{ $tag->name }}
-                            </td>
-                        </tr>
-                    @endforeach
-                    </tbody>
-                </table>
+                </div>
+                <div id="tags-table">
+                    <table id="filter-table" class="col-md-12">
+                        <tbody id="tag-table-body">
+                        @foreach ($tags as $tag)
+                            <tr>
+                                <!-- Tag Name -->
+                                <td class="btn btn-primary tags">
+                                    {{ $tag->name }}
+                                </td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                </div>
                 @endif
             </div>
         </div>
     </div>
 </div>
-<div id="mainBottom" class="col-md-12">
-    @if (count($resources) > 0)
-        <input id="storySearchInput" class="form-control col-md-4" type="text" placeholder="Type To Filter">
-            <br/>
-        <table id= "mainTable" class="table table-striped table-hover table-bordered">
-            <thead class="table-secondary">
-            <tr>
-                <th>Summary</th>
-                <th>Tags</th>
-            </tr>
-            </thead>
-            <tbody id="storyTableBody" class="table-light">
+@if (count($resources) > 0)
+<div id="main-bottom" class="row">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="form-group">
+                    <div class="input-group mb-3">
+                        <input id="story-search-input" class="form-control col-md-6" type="text" placeholder="Search">
+                        <div class="input-group-append">
+                            <button class=" btn input-group-text">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
             @foreach ($resources as $resource)
-                <tr class="resource-row" id={{$resource->id}}>
-                    <td class="table-text">
-                        <div>{{ $resource->summary }}</div>
-                    </td>
-                    <td>
+                <div class="story-item row">
+                    <div id="story-content" class="col-md-8" style="display: inline-block">
+                        <h2>{{ $resource->title }}</h2>
+                        <p>{{ $resource->summary }}</p>
                         @if(count($resource->tags) > 0)
                             @foreach($resource->tags as $tag)
-                                <button class="btn btn-primary">{{$tag->name }}</button>
+                                <span class="badge badge-pill badge-primary">{{$tag->name }}</span>
                             @endforeach
                         @endif
-                    </td>
-                </tr>
+                    </div>
+                    <div class="col-md-3" style="display: inline-block">
+                        @if($resource->sound)
+                            <audio controls>
+                                <source src="sounds/{{ $resource->sound }}" type="audio/mpeg">
+                            </audio>
+                        @endif
+                    </div>
+                    <hr/>
+                </div>
             @endforeach
-            </tbody>
-        </table>
-    @endif
+        <div class="row">
+            <div style="margin: 0 40%">
+                <button id="load-more" type="button" class="btn btn-outline-primary">Load More...</button>
+            </div>
+            <p class="to-top">
+                <a href="#top">Back to top</a>
+            </p>
+        </div>
+    </div>
+
+</div>
+@endif
+<div class="modal fade" id="first-time-info" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Modal body text goes here.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
 </div>
 
+<script src="{{ asset('js/jquery.min.js') }}"></script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDF6omCnwmT7ov_f6jtY63FCteo7o_c-tg"></script>
 <script src="{{ asset('js/custom.js') }}"></script>
 
 
 <script type="text/javascript">
-    const resources = {!! $resources !!}
+    const resources = {!! $resources !!};
     var markers = [];
     resources.map(function(resource){
     markers.push([resource.bio, parseFloat(resource.latitude), parseFloat(resource.longitude), resource.url]);
     });
     initMap(resources);
     $( document ).ready(function() {
-        var map;
-        var x = document.getElementById('errorBox');
-        filterSearch('tagSearchInput', 'tagTableBody');
-        filterSearch('storySearchInput', 'storyTableBody');
-        $('video, audio').mediaelementplayer({
-            pluginPath: 'https://cdnjs.com/libraries/mediaelement/',
-            shimScriptAccess: 'always'
+        $(".story-item").slice(0, 4).show();
+        $("#load-more").on('click', function (e) {
+            e.preventDefault();
+            $(".story-item:hidden").slice(0, 4).slideDown();
+            if ($(".story-item:hidden").length == 0) {
+                $("#load-more").fadeOut('slow');
+            }
+            $('html,body').animate({
+                scrollTop: $(this).offset().top
+            }, 1500);
         });
+        $('a[href=#top]').click(function () {
+            $('body,html').animate({
+                scrollTop: 0
+            }, 600);
+            return false;
+        });
+
+        $(window).scroll(function () {
+            if ($(this).scrollTop() > 50) {
+                $('.to-top a').fadeIn();
+            } else {
+                $('.to-top a').fadeOut();
+            }
+        });
+        var isshow = localStorage.getItem('isshow');
+        if (isshow== null) {
+            localStorage.setItem('isshow', 1);
+            $('#first-time-info').show();
+        }
 
     });
 </script>

@@ -26,24 +26,24 @@
             <div class="row">
                 <div id="main" class="col-md-12">
                     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                        <a class="navbar-brand" href="#"><img src="img/logo.jpg" alt="logo" width="auto" height="55"></a>
+                        <a class="navbar-brand" href="/"><img src="img/logo.jpg" alt="logo" width="auto" height="55"></a>
                         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
                             <span class="navbar-toggler-icon"></span>
                         </button>
 
                         <div class="collapse navbar-collapse" id="navbarColor03">
                             <ul class="navbar-nav mr-auto">
-                                <li class="nav-item">
+                                <li class="nav-item @if(Request::is('/'))active @endif">
                                     <a class="nav-link" href="/">Home</a>
                                 </li>
-                                <li class="nav-item active">
-                                    <a class="nav-link" href="/stories">Stories <span class="sr-only">(current)</span></a>
+                                <li class="nav-item @if(Request::is('stories'))active @endif">
+                                    <a class="nav-link" href="/stories">Stories</a>
                                 </li>
-                                <li class="nav-item">
+                                <li class="nav-item @if(Request::is('contactus')) active @endif">
                                     <a class="nav-link" href="/contactus">Contact Us</a>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">About</a>
+                                <li class="nav-item @if(Request::is('aboutus'))active @endif">
+                                    <a class="nav-link" href="/aboutus">About</a>
                                 </li>
                             </ul>
 
@@ -51,8 +51,6 @@
                             <ul class="nav navbar-nav navbar-right">
                                 <!-- Authentication Links -->
                                 @if (Auth::user())
-                                    {{--<li><a href="{{ route('login') }}">Login</a></li>
-                                    <li><a href="{{ route('register') }}">Register</a></li>--}}
                                     <li class="dropdown">
                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                             {{ Auth::user()->name }}
@@ -78,8 +76,8 @@
                         </div>
                     </nav>
                 </div>
-                @yield('content')
             </div>
+            @yield('content')
         </div>
     </div>
 
@@ -88,6 +86,6 @@
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('js/custom.js') }}"></script>
 
-    <script src="{{ asset('js/mediaelement/mediaelement-and-player.min.js') }}"></script>
+    <script src="{{ asset('js/elasticsearch-js/elasticsearch.jquery.js') }}"></script>
 </body>
 </html>

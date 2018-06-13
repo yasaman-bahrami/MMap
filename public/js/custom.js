@@ -1,10 +1,8 @@
-
-
 function initMap(markers) {
-	var myLatLng = {lat: 47.5682313, lng: -52.7609158};
+	var myLatLng = {lat: 47.5700861, lng: -52.7382426};
 	map = new google.maps.Map(document.getElementById('map'), {
 	  center: myLatLng,
-	  zoom: 10
+	  zoom: 14
 	});
 
 	createdMarkers = [];
@@ -21,11 +19,13 @@ function initMap(markers) {
                 id: theMarker.id,
                 position: position,
                 map: map,
-                title: theMarker.summary,
+                title: theMarker.title,
+                summary: theMarker.summary,
                 url: theMarker.sound,
                 icon: 'img/pin.png',
                 latitude: theMarker.latitude,
-                longitude: theMarker.longitude
+                longitude: theMarker.longitude,
+                sound: theMarker.sound
             });
             createdMarkers.push(marker);
 		}
@@ -33,8 +33,10 @@ function initMap(markers) {
 	});
 	createdMarkers.map(function (marker) {
         marker.addListener('click', function() {
-            $('#infoBody').html(this.title);
-            $('#info').addClass('infoOpen');
+            $('#info-title').html(this.title);
+            $('#info-body').html(this.summary);
+            $('#info').addClass('info-open');
+            $('#audio-src').attr('src', '/sounds/'+this.sound);
         });
 	});
 
@@ -42,67 +44,35 @@ function initMap(markers) {
 }
 
 function hideInfo() {
-    $('#info').removeClass('infoOpen');
+    $('#info').removeClass('info-open');
 }
 
-function getLocation() {
-	if (navigator.geolocation) {
-		navigator.geolocation.getCurrentPosition(showPosition, showError);
-	} else {
-		x.innerHTML = "Geolocation is not supported by this browser.";
-	}
-}
-
-function showPosition(position) {
-	initMap(position.coords.latitude, position.coords.longitude);
-}
-
-function showError(error) {
-	switch(error.code) {
-		case error.PERMISSION_DENIED:
-			x.innerHTML = "User denied the request for Geolocation."
-			break;
-		case error.POSITION_UNAVAILABLE:
-			x.innerHTML = "Location information is unavailable."
-			break;
-		case error.TIMEOUT:
-			x.innerHTML = "The request to get user location timed out."
-			break;
-		case error.UNKNOWN_ERROR:
-			x.innerHTML = "An unknown error occurred."
-			break;
-	}
-}
-
-function filterSearch(searchInputId, tableBodyId) {
-    $("#"+searchInputId).keyup(function () {
-        var data = this.value.split(" ");
-        var rows = $("#"+tableBodyId).find("tr");
-        if (this.value == "") {
-            rows.show();
-            return;
-        }
-        rows.hide();
-
-        rows.filter(function (i, v) {
-            for (var d = 0; d < data.length; ++d) {
-                if ($(this).is(":contains('" + data[d] + "')")) {
-                    return true;
-                }
+$("#tag-search-input").keyup(function () {
+    var data = this.value.split(" ");
+    var rows = $("#tag-table-body").find("tr");
+    if (this.value == "") {
+        rows.show();
+        return;
+    }
+    rows.hide();
+    rows.filter(function (i, v) {
+        for (var d = 0; d < data.length; ++d) {
+            if ($(this).is(":contains('" + data[d] + "')")) {
+                return true;
             }
-            return false;
-        })
-            .show();
-    }).focus(function () {
-        this.value = "";
-        $(this).css({
-            "color": "black"
-        });
-        $(this).unbind('focus');
-    }).css({
-        "color": "#C0C0C0"
+        }
+        return false;
+    })
+        .show();
+}).focus(function () {
+    this.value = "";
+    $(this).css({
+        "color": "black"
     });
-}
+    $(this).unbind('focus');
+}).css({
+    "color": "#C0C0C0"
+});
 
 $.expr[":"].contains = $.expr.createPseudo(function(arg) {
     return function( elem ) {
@@ -113,9 +83,9 @@ $.expr[":"].contains = $.expr.createPseudo(function(arg) {
 // clicking on table rows in main page
 $('.resource-row').click(function(e){
     var resourceId = $(this).attr('id');
-    if($("#tagSearchInput").val() !== ''){
-        $("#tagSearchInput").val('');
-        initMap(resources)
+    if($("#tag-search-input").val() !== ''){
+        $("#tag-search-input").val('');
+        initMap(resources);
     }
     createdMarkers.map(function(marker){
        if (parseInt(marker.id) === parseInt(resourceId)) {
@@ -127,19 +97,26 @@ $('.resource-row').click(function(e){
 });
 
 $( ".tags" ).click(function() {
-    if($("#tagSearchInput").val() === ""){
-        $("#tagSearchInput").focus();
-        $("#tagSearchInput").val(this.innerText);
+    if($("#tag-search-input").val() === ""){
+        $("#tag-search-input").focus();
+        $("#tag-search-input").val(this.innerText);
     } else {
-        $("#tagSearchInput").val($("#tagSearchInput").val() +" "+ this.innerText);
+        $("#tag-search-input").val($("#tag-search-input").val() +" "+ this.innerText);
     }
-    var tagsList = $("#tagSearchInput").val().split(" ");
+    var tagsList = $("#tag-search-input").val().split(" ");
     getResourceByTagList(tagsList);
 
 });
 
+$("#story-search-input").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#story-content p").filter(function() {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+});
+
 function handleTagInputChange(){
-    var tagsValue = $('#tagSearchInput').val().trim();
+    var tagsValue = $('#tag-search-input').val().trim();
     if (tagsValue !== ''){
         var tagsList = tagsValue.split(" ");
         getResourceByTagList(tagsList);
@@ -165,10 +142,6 @@ function getResourceByTagList(tagsList) {
         }
     });
 }
-
-$("#addStory").click(function () {
-
-});
 
 function saveResource() {
     $.ajax({

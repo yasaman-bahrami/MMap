@@ -5,20 +5,21 @@ body {
 	height: 100vh;
 }
 #main{
-	background: #FFF;
+	background: #F8F5F0;
+	border-bottom: 1px #CED4DA solid;
 }
-#mainTop{
+#main-top{
 	background-color: #FFF;
 	border-radius: 0;
     background-attachment: fixed;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-	padding-top: 20px;
+	padding: 20px;
 	min-height: 540px;
 	position: relative;
 }
-#mainTable{
+#main-table{
 }
 #map {
 	height: 500px;
@@ -27,26 +28,26 @@ body {
 	position: absolute;
 	border: 1px #CED4DA  solid;
 }
-#logoTxt{
+#tags-table{
+	height: 438px;
+	overflow: scroll;
+}
+#logo-text{
 	margin-left:5px;
 }
 .contact{
-	background: url("../img/map-image.png");
-	background-color: black;
-	height: 90%;
-	margin-bottom: 20px;
+
 }
-#mainBottom{
-	background: #3E3F3A;
+#main-bottom{
+	background: #c6c4b8;
 	padding-top: 20px;
 	height: 100%;
 }
-#filterTable tr{
+#filter-table tr{
 	float: left;
 	margin: 2px;
 }
 #info{
-
 	left:-100%;
 	position: relative;
 	background-color: #202020;
@@ -60,6 +61,12 @@ body {
 	border-top-left-radius: 5px;
 	margin-left: -15px;
 }
+#info-title{
+	font-weight: bold;
+	border-bottom: 1px solid white;
+	margin-bottom: 8px;
+	font-size: 16px;
+}
 #info audio{
 	width: 100%;
 }
@@ -67,13 +74,13 @@ body {
 	width: 100%;
 	text-align: right;
 }
-#storyTableBody .btn{
+#story-table-body .btn{
 	margin: 1px
 }
 .fulltable .table-text {
 	max-width: 350px;
 }
-.infoOpen{
+.info-open{
 	left: 15px !important;
 	-webkit-transition: all 1s, -webkit-transform 1s;
 	transition: all 1s, transform 1s;
@@ -92,6 +99,22 @@ body {
 .navbar-light .navbar-nav .nav-link {
 	font-size: 15px;
 }
-.bg-light {
-	border-bottom: 1px #CED4DA  solid;
+.story-item {
+	display:none;
+}
+#load-more {
+	margin: 0 50%;
+}
+.to-top {
+	position: fixed;
+	bottom: 10px;
+	right: 20px;
+}
+.to-top a {
+	display: none;
+	color: #33739E;
+}
+#download-pdf  {
+	float: right;
+	border-radius: 4px 4px 0px 0px;
 }

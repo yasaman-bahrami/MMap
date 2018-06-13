@@ -15,18 +15,23 @@ class CreateResourcesTable extends Migration
     {
         Schema::create('resources', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('summary');
-            $table->string('bio');
-            $table->string('storyteller');
-            $table->string('interviewer');
-            $table->string('time_of_story');
-            $table->string('time_of_interview');
-            $table->string('location');
-            $table->string('notes');
-            $table->string('sound');
+            $table->string('title');
             $table->string('latitude');
             $table->string('longitude');
+            $table->string('storyteller');
+            $table->string('attribute1');
+            $table->string('attribute2');
+            $table->string('summary');
+            $table->string('bio');
+            $table->string('interviewer');
+            $table->string('time_of_story');
+            $table->string('permission');
+            $table->string('date_requested');
+            $table->string('date_confirmed');
+            $table->string('notes1');
+            $table->string('notes2');
             $table->integer('user_id')->index();
+            $table->string('sound');
             $table->timestamps();
         });
     }

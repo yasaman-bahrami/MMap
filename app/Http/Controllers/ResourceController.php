@@ -2,8 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\OriginalData;
+use App\PageRanker\Calculation\PageRank;
+use App\PageRanker\Calculation\ResultFormatter;
+use App\PageRanker\Edge;
+use App\PageRanker\Graph;
+use App\PageRanker\Node;
 use App\Repositories\ResourceRepository;
 use App\Repositories\TagRepository;
+use App\Resource;
+use App\ResourceTag;
+use App\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Validator;
 
@@ -20,7 +29,7 @@ class ResourceController extends Controller
     public function index(Request $request)
     {
         return view('index', [
-            'resources' => $this->resources->getAll(),
+            'resources' => $this->resources->getRelatedResourcesPageRanked(),
             'tags' => $this->tags->getAll()
         ]);
     }
@@ -69,6 +78,17 @@ class ResourceController extends Controller
         $this->authorize('destroy', $resource);
 
         $resource->delete();
+
+        return redirect('/resources');
+    }
+    public function createRelations(Request $request)
+    {
+        $resources = $this->resources->getAll();
+        $originalDatas = OriginalData::all();
+        foreach ($originalDatas as $originalData){
+            echo $originalData;
+        }
+
 
         return redirect('/resources');
     }
