@@ -15,6 +15,13 @@ class TagRepository
 {
     public function getAll()
     {
-        return Tag::get();
+        return Tag::orderBy('name', 'asc')->get();
+    }
+
+    public function storeTag($name)
+    {
+        $tag = new Tag();
+        $tag->name = $name;
+        $tag->save();
     }
 }

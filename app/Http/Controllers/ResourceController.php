@@ -40,6 +40,10 @@ class ResourceController extends Controller
         ]);
     }
 
+    public function showTags() {
+        return json_encode(['tags' => $this->tags->getAll()]);
+    }
+
     public function getResourcesByTags(Request $request)
     {
         $tagListArray = $request->input('tagList');
@@ -50,8 +54,13 @@ class ResourceController extends Controller
         ];
         return json_encode($payload);
     }
+    public function storeTag(Request $request )
+    {
+        var_dump($request);
+        //$this->tags->storeTag("dsd");
+    }
 
-    public function store(Request $request, Resource $resource)
+    public function update(Request $request, Resource $resource)
     {
         $this->authorize('store', $resource);
 
@@ -73,23 +82,4 @@ class ResourceController extends Controller
         return redirect('/resources');
     }
 
-    public function destroy(Request $request, Resource $resource)
-    {
-        $this->authorize('destroy', $resource);
-
-        $resource->delete();
-
-        return redirect('/resources');
-    }
-    public function createRelations(Request $request)
-    {
-        $resources = $this->resources->getAll();
-        $originalDatas = OriginalData::all();
-        foreach ($originalDatas as $originalData){
-            echo $originalData;
-        }
-
-
-        return redirect('/resources');
-    }
 }

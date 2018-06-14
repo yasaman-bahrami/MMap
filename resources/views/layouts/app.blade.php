@@ -8,17 +8,16 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'The Neighbours') }}</title>
 
     <!-- Styles -->
     <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet">
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/modal.css') }}" rel="stylesheet">
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
-
     <link rel="stylesheet" href="fonts/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/js/mediaelement/mediaelementplayer.min.css" />
 </head>
 <body>
     <div class="content">
@@ -42,8 +41,12 @@
                                 <li class="nav-item @if(Request::is('contactus')) active @endif">
                                     <a class="nav-link" href="/contactus">Contact Us</a>
                                 </li>
-                                <li class="nav-item @if(Request::is('aboutus'))active @endif">
-                                    <a class="nav-link" href="/aboutus">About</a>
+                                <li class="nav-item dropdown @if(Request::is('aboutus'))active @endif">
+                                    <a id="aboutus-menu" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">About Us</a>
+                                    <div id="aboutus-open-menu" class="dropdown-menu" x-placement="bottom-start">
+                                        <a class="nav-link" href="/aboutus">About</a>
+                                        <a class="nav-link" href="#">Another action</a>
+                                    </div>
                                 </li>
                             </ul>
 
@@ -80,12 +83,20 @@
             @yield('content')
         </div>
     </div>
-
-    <!-- Scripts -->
-    <script src="{{ asset('js/jquery.min.js') }}"></script>
-    <script src="{{ asset('js/bootstrap.min.js') }}"></script>
-    <script src="{{ asset('js/custom.js') }}"></script>
-
-    <script src="{{ asset('js/elasticsearch-js/elasticsearch.jquery.js') }}"></script>
+    <div class="footer">
+        <div class="row">
+            <div id="copy-right" class="col-md-6">
+                <p> Copyright @ 2018 yasaman.bahrami@gmail.com.</p>
+            </div>
+            <div id="copy-right-location" class="col-md-6">
+                <a href="https://www.google.com/maps/search/Newfoundland+and+Labrador+Canada">Newfoundland and Labrador, Canada.</a>
+            </div>
+        </div>
+    </div>
+<!-- Scripts -->
+<script src="{{ asset('js/jquery.min.js') }}"></script>
+<script src="{{ asset('js/bootstrap.min.js') }}"></script>
+<script src="{{ asset('js/custom.js') }}"></script>
+<script src="{{ asset('js/modal.js') }}"></script>
 </body>
 </html>

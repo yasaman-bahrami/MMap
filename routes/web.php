@@ -26,9 +26,10 @@ Route::get('/', 'ResourceController@index');
     //Resources Routes
     Route::get('/resources', 'ResourceController@index');
     Route::get('/stories', 'ResourceController@showStories');
+    Route::get('/showTags', 'ResourceController@showTags');
     Route::get('/resourcesByTags', 'ResourceController@getResourcesByTags');
-    Route::post('/resource', 'ResourceController@store');
-    Route::delete('/resource/{resource}', 'ResourceController@destroy');
+    Route::put('/resource', 'ResourceController@update');
+    Route::post('/tag', 'ResourceController@storeTag');
     Route::get('/contactus', function() {
         return view('contactus');
     });
@@ -40,5 +41,3 @@ Route::get('/', 'ResourceController@index');
     Route::get('/tags', 'ResourceController@index');
 
 Auth::routes();
-
-Route::get('/admin', 'HomeController@index')->name('admin');

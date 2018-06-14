@@ -29,39 +29,42 @@ class ResourceRepository
         $resources = Resource::with('tags')->get();
         $count = 0;
         $graph = new Graph();
-        foreach ($resources as $resourceA)
+        if($resources->get(0)->pagerank == 0)
         {
-            $tagsA = $resourceA->tags()->get();
-            foreach ($resources as $resourceB)
+            foreach ($resources as $resourceA)
             {
-                if ($resourceA->id != $resourceB->id)
+                $tagsA = $resourceA->tags()->get();
+                foreach ($resources as $resourceB)
                 {
-                    $tagsB = $resourceB->tags()->get();
-                    foreach ($tagsA as $tagA)
+                    if ($resourceA->id != $resourceB->id)
                     {
-                        foreach ($tagsB as $tagB)
+                        $tagsB = $resourceB->tags()->get();
+                        foreach ($tagsA as $tagA)
                         {
-                            if ($tagA->name == $tagB->name)
+                            foreach ($tagsB as $tagB)
                             {
-                                $graph->addEdge(new Edge(new Node($resourceA->id), new Node($resourceB->id)));
+                                if ($tagA->name == $tagB->name)
+                                {
+                                    $graph->addEdge(new Edge(new Node($resourceA->id), new Node($resourceB->id)));
+                                }
                             }
                         }
                     }
                 }
             }
-        }
 
-        //Run the page rank;
-        $pageRank = new PageRank();
-        $pageRankCalculation = $pageRank->calculatePagerank($graph);
-        $pageRankCalculation->getLastHistoryEntry()->sortEntries();
+            //Run the page rank;
+            $pageRank = new PageRank();
+            $pageRankCalculation = $pageRank->calculatePagerank($graph);
+            $pageRankCalculation->getLastHistoryEntry()->sortEntries();
 
-        $entries = $pageRankCalculation->getLastHistoryEntry()->getEntries();
-        foreach ($entries as $entry)
-        {
-            $resource = $this->getResourceById($entry->getNode()->getName());
-            $resource->pagerank = $entry->getNewPr();
-            $resource->save();
+            $entries = $pageRankCalculation->getLastHistoryEntry()->getEntries();
+            foreach ($entries as $entry)
+            {
+                $resource = $this->getResourceById($entry->getNode()->getName());
+                $resource->pagerank = $entry->getNewPr();
+                $resource->save();
+            }
         }
         return Resource::with('tags')->orderBy('pagerank', 'desc')->get();
     }

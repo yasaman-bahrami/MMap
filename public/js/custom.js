@@ -143,13 +143,46 @@ function getResourceByTagList(tagsList) {
     });
 }
 
-function saveResource() {
+$("#update-story-submit").on("keyup", function(event){
     $.ajax({
-        type: "POST",
-        url: host+'/comment/add',
+        type: "PUT",
+        url: "/resource",
         data: { name:name, message:message, post_id:postid },
         success: function( msg ) {
             alert( msg );
         }
     });
-}
+});
+$("#select-tags").on("click", function (event) {
+    $.ajax({
+        type: "GET",
+        url: "/showTags",
+        parseJson: true
+    }).done(function(response) {
+        response = (JSON.parse(response));
+        var options = "";
+        $.each(response.tags, function (key, value) {
+            options += ("<option>"+value.name+"</option>")
+        });
+        $("#select-tags").html(options);
+    });
+});
+$("#save-tag").on("click", function (event) {
+    event.preventDefault();
+    event.stopPropagation();
+    var name = $("#save-tag-input").val();
+    console.log(name);
+    $.ajax({
+        type: "POST",
+        url: "/tag",
+        data: {name: name, _token: "{{ csrf_token() }}"}
+    }).done(function(response) {
+
+    });
+});
+$("#aboutus-menu").on("click", function (event) {
+    $("#aboutus-open-menu").show();
+    /*if($("#aboutus-open-menu").css('display') == 'block')
+        $("#aboutus-open-menu").hide();*/
+
+});

@@ -91,7 +91,7 @@
                 </div>
             @endforeach
         <div class="row">
-            <div style="margin: 0 40%">
+            <div style="margin: 10px 40%">
                 <button id="load-more" type="button" class="btn btn-outline-primary">Load More...</button>
             </div>
             <p class="to-top">
@@ -102,31 +102,25 @@
 
 </div>
 @endif
-<div class="modal fade" id="first-time-info" role="dialog">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Modal title</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+<div id="customized-modal" class="modal-w3">
+    <div class="modal-content-w3">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="modal-header-w3">
+                    <span class="close-w3" onclick="closeModal()">&times;</span>
+                    <p>Update Story</p>
+                </div>
             </div>
-            <div class="modal-body">
-                <p>Modal body text goes here.</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary">Save changes</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
+        </div>
+        <div class="modal-body-w3">
+            <p>dfdfd</p>
         </div>
     </div>
 </div>
 
 <script src="{{ asset('js/jquery.min.js') }}"></script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDF6omCnwmT7ov_f6jtY63FCteo7o_c-tg"></script>
 <script src="{{ asset('js/custom.js') }}"></script>
-
-
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDF6omCnwmT7ov_f6jtY63FCteo7o_c-tg"></script>
 <script type="text/javascript">
     const resources = {!! $resources !!};
     var markers = [];
@@ -163,9 +157,8 @@
         var isshow = localStorage.getItem('isshow');
         if (isshow== null) {
             localStorage.setItem('isshow', 1);
-            $('#first-time-info').show();
+            openModal();
         }
-
     });
 </script>
 @endsection
