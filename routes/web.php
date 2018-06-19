@@ -36,6 +36,9 @@ Route::get('/', 'ResourceController@index');
     Route::get('/aboutus', function() {
         return view('aboutus');
     });
+    Route::get('/projectteam', function() {
+        return view('projectteam');
+    });
 
     //Tags Routes
     Route::get('/tags', 'ResourceController@index');

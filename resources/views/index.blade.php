@@ -8,8 +8,8 @@
             <button type="button" class="close" data-dismiss="info" onclick="hideInfo();">&times;</button>
             <div id="info-title"></div>
             <p id="info-body"></p>
-            <audio style="width: 100%" controls>
-                <source id="audio-src" type="audio/mp3" src=""/>
+            <audio id="audio-src" style="width: 100%" controls>
+                <source type="audio/mp3" src=""/>
             </audio>
         </div>
     </div>
@@ -19,13 +19,7 @@
                 @if (count($tags) > 0)
                 <div class="form-group">
                     <div class="input-group mb-3">
-                        <input
-                            id="tag-search-input"
-                            type="text"
-                            class="form-control"
-                            placeholder="Search Tags"
-                            onChange="handleTagInputChange()"
-                        >
+                        <input id="tag-search-input" type="text" class="form-control" placeholder="Search Tags" onChange="handleTagInputChange()">
                         <div class="input-group-append">
                             <button class=" btn input-group-text">
                                 <i class="fa fa-search"></i>
@@ -69,27 +63,31 @@
                 </div>
             </div>
         </div>
+        <div id="story-container">
             @foreach ($resources as $resource)
-                <div class="story-item row">
-                    <div id="story-content" class="col-md-8" style="display: inline-block">
-                        <h2>{{ $resource->title }}</h2>
-                        <p>{{ $resource->summary }}</p>
-                        @if(count($resource->tags) > 0)
-                            @foreach($resource->tags as $tag)
-                                <span class="badge badge-pill badge-primary">{{$tag->name }}</span>
-                            @endforeach
-                        @endif
-                    </div>
-                    <div class="col-md-3" style="display: inline-block">
-                        @if($resource->sound)
-                            <audio controls>
-                                <source src="sounds/{{ $resource->sound }}" type="audio/mpeg">
-                            </audio>
-                        @endif
-                    </div>
-                    <hr/>
+            <div class="story-item row">
+                <div class="col-md-8 story-content" style="display: inline-block">
+                    <a href="#"><h2 id ="story-{{$resource->id}}">{{ $resource->title }}</h2></a>
+                    <p>{{ $resource->summary }}</p>
+                    @if(count($resource->tags) > 0)
+                        @foreach($resource->tags as $tag)
+                            <span class="badge badge-pill badge-primary">{{$tag->name }}</span>
+                        @endforeach
+                    @endif
                 </div>
+                <div class="col-md-3" style="display: inline-block">
+                    @if($resource->sound)
+                    <div class="audio-div">
+                        <audio controls>
+                            <source src="sounds/{{ $resource->sound }}" type="audio/mpeg">
+                        </audio>
+                    </div>
+                    @endif
+                </div>
+                <hr/>
+            </div>
             @endforeach
+        </div>
         <div class="row">
             <div style="margin: 10px 40%">
                 <button id="load-more" type="button" class="btn btn-outline-primary">Load More...</button>
@@ -102,31 +100,19 @@
 
 </div>
 @endif
-<div id="customized-modal" class="modal-w3">
-    <div class="modal-content-w3">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="modal-header-w3">
-                    <span class="close-w3" onclick="closeModal()">&times;</span>
-                    <p>Update Story</p>
-                </div>
-            </div>
-        </div>
-        <div class="modal-body-w3">
-            <p>dfdfd</p>
-        </div>
-    </div>
-</div>
+
 
 <script src="{{ asset('js/jquery.min.js') }}"></script>
 <script src="{{ asset('js/custom.js') }}"></script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDF6omCnwmT7ov_f6jtY63FCteo7o_c-tg"></script>
+<script src="{{ asset('js/fuse.min.js') }}"></script>
 <script type="text/javascript">
     const resources = {!! $resources !!};
     var markers = [];
     resources.map(function(resource){
     markers.push([resource.bio, parseFloat(resource.latitude), parseFloat(resource.longitude), resource.url]);
     });
+
     initMap(resources);
     $( document ).ready(function() {
         $(".story-item").slice(0, 4).show();
@@ -154,11 +140,7 @@
                 $('.to-top a').fadeOut();
             }
         });
-        var isshow = localStorage.getItem('isshow');
-        if (isshow== null) {
-            localStorage.setItem('isshow', 1);
-            openModal();
-        }
+
     });
 </script>
 @endsection

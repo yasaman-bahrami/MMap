@@ -2,26 +2,16 @@
 
 @section('content')
 <div class="row">
-    <div id="main-bottom" class="col-md-12">
+    <div class="col-md-12">
         <div class="contact">
-            <form class="contactus-form" onsubmit="javascript: void(0)">
-                <h1>Contact Us</h1>
-                <hr/>
-                <div class="form-group">
-                    <label class="white-label" for="inputName">Full name</label>
-                    <input type="text" class="form-control" id="inputName" placeholder="Enter your full name...">
-                </div>
-                <div class="form-group">
-                    <label class="white-label" for="inputEmail">Email address</label>
-                    <input type="email" class="form-control" id="inputEmail" placeholder="Enter your email...">
-                </div>
-                <div class="form-group">
-                    <label class="white-label" for="inputStory">Your story</label>
-                    <textarea class="form-control" id="inputStory" placeholder="Tell us your story..."></textarea>
-                </div>
+            <h1>Contact Us</h1>
+            <hr/>
+            <p>School of Music</p>
+            <p>Memorial University of Newfoundland</p>
+            <p>St. John's, NL A1C 5S7</p>
+            <p><i>Phone:</i> (709) 864-2051</p>
+            <p><i>Email:</i> mforsyth@mun.ca</p>
 
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
         </div>
     </div>
 </div>

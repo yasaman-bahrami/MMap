@@ -3,15 +3,22 @@ html {
 }
 body {
 	height: 100vh;
+	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+p {
+	font-family: Georgia,Times,"Times New Roman",serif;
+}
+h1,h2,h3{
+	font-family: "Avenir LT W01 95 Black",sans-serif;
 }
 .content {
 	padding-bottom: 40px;
 }
-#main{
+#main {
 	background: #F8F5F0;
 	border-bottom: 1px #CED4DA solid;
 }
-#main-top{
+#main-top {
 	background-color: #FFF;
 	border-radius: 0;
     background-attachment: fixed;
@@ -22,7 +29,11 @@ body {
 	min-height: 540px;
 	position: relative;
 }
-#main-table{
+#main-table {
+}
+#main-table-container {
+	border-radius: 4px 0px 4px 4px;
+	overflow: hidden;
 }
 #map {
 	height: 500px;
@@ -31,26 +42,25 @@ body {
 	position: absolute;
 	border: 1px #CED4DA  solid;
 }
-#tags-table{
+#tags-table {
 	height: 438px;
 	overflow: scroll;
 }
-#logo-text{
+#logo-text {
 	margin-left:5px;
 }
-.contact{
+.contact {
 
 }
-#main-bottom{
+#main-bottom {
 	background: #c6c4b8;
 	padding-top: 20px;
-	height: 100%;
 }
-#filter-table tr{
+#filter-table tr {
 	float: left;
 	margin: 2px;
 }
-#info{
+#info {
 	left:-100%;
 	position: relative;
 	background-color: #202020;
@@ -64,20 +74,20 @@ body {
 	border-top-left-radius: 5px;
 	margin-left: -15px;
 }
-#info-title{
+#info-title {
 	font-weight: bold;
 	border-bottom: 1px solid white;
 	margin-bottom: 8px;
 	font-size: 16px;
 }
-#info audio{
+#info audio {
 	width: 100%;
 }
-#info button.close{
+#info button.close {
 	width: 100%;
 	text-align: right;
 }
-#story-table-body .btn{
+#story-table-body .btn {
 	margin: 1px
 }
 .fulltable .table-text {
@@ -96,8 +106,10 @@ body {
 }
 .contactus-form {
 	width: 60%;
-	margin: 0 auto;
-	padding-top: 15%;
+	margin: 40px auto;
+	padding: 20px;
+	background: #c6c4b8;
+	border-radius: 4px;
 }
 .navbar-light .navbar-nav .nav-link {
 	font-size: 15px;
@@ -119,7 +131,7 @@ body {
 }
 #download-pdf {
 	float: right;
-	border-radius: 4px 4px 0px 0px;
+	border-radius: 3px 3px 0px 0px;
 }
 .footer {
 	position: fixed;
@@ -139,4 +151,49 @@ body {
 }
 .add-new-tag {
 	margin-top: 28px;
+}
+.audio-div {
+	border-radius: 3px;
+	overflow: hidden;
+	width: 300px;
+	height: 32px;
+}
+.aboutus-text {
+	text-align: justify;
+}
+.aboutus-text a {
+	color: #2a4a6a;
+}
+.image-size {
+	width: 100%;
+	height: auto;
+	max-height: 100vh;
+	max-width: 100vw;
+}
+.image-frame {
+	border-radius: 3px;
+	overflow: hidden;
+	margin: 3px;
+}
+.bg-white {
+	background: white;
+}
+.story-content a{
+	text-decoration: underline;
+	color: #2a4a6a;
+}
+.contact p{
+	font-size: 18px;
+}
+.dropdown-content-ws {
+	display: none;
+	position: absolute;
+	background-color: #f9f9f9;
+	min-width: 160px;
+	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+	z-index: 1;
+	border-radius: 2px;
+}
+.dropdown-ws:hover .dropdown-content-ws {
+	display: block;
 }

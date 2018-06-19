@@ -1,8 +1,8 @@
 function initMap(markers) {
-	var myLatLng = {lat: 47.5700861, lng: -52.7382426};
+	var myLatLng = {lat: 47.6096027, lng: -52.6896071};
 	map = new google.maps.Map(document.getElementById('map'), {
 	  center: myLatLng,
-	  zoom: 14
+	  zoom: 12
 	});
 
 	createdMarkers = [];
@@ -36,11 +36,26 @@ function initMap(markers) {
             $('#info-title').html(this.title);
             $('#info-body').html(this.summary);
             $('#info').addClass('info-open');
-            $('#audio-src').attr('src', '/sounds/'+this.sound);
+            $('#audio-src source').attr('src', '/sounds/'+this.sound);
+            $('#audio-src').load();
         });
 	});
+}
 
-
+function fuzzySearch(resources, term) {
+    if(term === "")
+        return resources;
+    var options = {
+        shouldSort: true,
+        location: 0,
+        threshold: 0.4,
+        distance: 1000,
+        maxPatternLength: 32,
+        minMatchCharLength: 2,
+        keys: ['title','tags.name','summary']
+    };
+    var fuse = new Fuse(resources, options);
+    return fuse.search(term);
 }
 
 function hideInfo() {
@@ -48,7 +63,7 @@ function hideInfo() {
 }
 
 $("#tag-search-input").keyup(function () {
-    var data = this.value.split(" ");
+    var data = this.value.split(",");
     var rows = $("#tag-table-body").find("tr");
     if (this.value == "") {
         rows.show();
@@ -65,10 +80,6 @@ $("#tag-search-input").keyup(function () {
     })
         .show();
 }).focus(function () {
-    this.value = "";
-    $(this).css({
-        "color": "black"
-    });
     $(this).unbind('focus');
 }).css({
     "color": "#C0C0C0"
@@ -81,8 +92,8 @@ $.expr[":"].contains = $.expr.createPseudo(function(arg) {
 });
 
 // clicking on table rows in main page
-$('.resource-row').click(function(e){
-    var resourceId = $(this).attr('id');
+$('#story-container .story-item h2').click(function(e){
+    var resourceId = $(this).attr('id').split('-')[1];
     if($("#tag-search-input").val() !== ''){
         $("#tag-search-input").val('');
         initMap(resources);
@@ -90,6 +101,7 @@ $('.resource-row').click(function(e){
     createdMarkers.map(function(marker){
        if (parseInt(marker.id) === parseInt(resourceId)) {
            marker.setIcon('img/pin-hover.png');
+           hideInfo();
        } else {
            marker.setIcon('img/pin.png');
        }
@@ -97,28 +109,52 @@ $('.resource-row').click(function(e){
 });
 
 $( ".tags" ).click(function() {
-    if($("#tag-search-input").val() === ""){
-        $("#tag-search-input").focus();
-        $("#tag-search-input").val(this.innerText);
+    var tagInput = $("#tag-search-input");
+    if(tagInput.val() === ""){
+        tagInput.focus();
+        tagInput.val(this.innerText);
     } else {
-        $("#tag-search-input").val($("#tag-search-input").val() +" "+ this.innerText);
+        tagInput.val($("#tag-search-input").val() +","+ this.innerText+",");
     }
-    var tagsList = $("#tag-search-input").val().split(" ");
+    var tagsList = tagInput.val().split(",");
     getResourceByTagList(tagsList);
 
 });
 
 $("#story-search-input").on("keyup", function() {
     var value = $(this).val().toLowerCase();
-    $("#story-content p").filter(function() {
-        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    var storyHTML = "";
+    $.each(fuzzySearch(resources, value), function(key, value){
+        storyHTML += '<div class="story-item row">' +
+            '<div class="col-md-8 story-content" style="display: inline-block">' +
+            '<a href="#"><h2 id ="story-'+value.id+'">'+value.title+'</h2></a>' +
+            '<p>'+value.summary+'</p>';
+        $.each(value.tags, function (tagKey, tagValue) {
+            storyHTML += '<span class="badge badge-pill badge-primary">'+tagValue.name+'</span>';
+        });
+        storyHTML += '</div>' +
+            ' <div class="col-md-3" style="display: inline-block">' ;
+        if(value.sound !== "")
+           storyHTML += '<div class="audio-div">' +
+            '<audio controls>' +
+            '<source src="sounds/'+value.sound+'" type="audio/mpeg">' +
+            '</audio>' +
+            '</div>' ;
+
+        storyHTML+= '</div>' +
+            '<hr/>' +
+            '</div>';
+
     });
+    $('#story-container').empty();
+    $('#story-container').append(storyHTML);
+    $(".story-item").slice(0, 4).show();
 });
 
 function handleTagInputChange(){
     var tagsValue = $('#tag-search-input').val().trim();
     if (tagsValue !== ''){
-        var tagsList = tagsValue.split(" ");
+        var tagsList = tagsValue.split(",");
         getResourceByTagList(tagsList);
     } else {
         initMap(resources);
@@ -143,6 +179,63 @@ function getResourceByTagList(tagsList) {
     });
 }
 
+function openUpdateStoryModal(story) {
+
+    var tagsHtml = "";
+    var tagOptions = "";
+    $('#title').val(story.title);
+    $('#summary').val(story.summary);
+    $('#bio').val(story.bio);
+    $('#notes').val(story.notes1+", "+story.notes2);
+    $('#latitude').val(story.latitude);
+    $('#longitude').val(story.longitude);
+    $('#storyTeller').val(story.storyteller);
+    $('#interviewer').val(story.interviewer);
+    $('#timeOfStory').val(story.time_of_story);
+    $('#attributes').val(story.attribute1+", "+story.attribute2);
+    $('#tags-update-story').empty();
+    var addNewTagHtml = '<div class="col-md-6">' +
+        ' <div class="input-group add-new-tag">' +
+        '<input id="save-tag-input" class="form-control" type="text" placeholder="Enter A New Tag">' +
+        '<div class="input-group-append">' +
+        '<button id="save-tag" class="btn btn-success input-group-text" style="background: #2A4A6A">' +
+        'Save New Tag' +
+        '</button>' +
+        '</div>' +
+        '</div>' +
+        '</div>';
+    $('#tags-update-story').append(addNewTagHtml);
+    var count = 1;
+    $.each(story.tags,function (key,value) {
+        $.ajax({
+            type: "GET",
+            url: "/showTags",
+            parseJson: true
+        }).done(function(response) {
+            response = (JSON.parse(response));
+            $.each(response.tags, function (tagKey, tagValue) {
+                if(tagValue.id === value.id)
+                    tagOptions += ("<option selected>"+tagValue.name+"</option>");
+                else
+                    tagOptions += ("<option>"+tagValue.name+"</option>")
+            });
+
+            tagsHtml = '<div class="col-md-2">' +
+                '<div class="form-group">' +
+                '<label for="tags">Tag'+count+'</label>' +
+                '<select class="form-control selectpicker select-tags" id="select-tags-'+value.id+'" data-live-search="true">' +
+                tagOptions +
+                '</select>' +
+                '</div>' +
+                '</div>';
+
+            $('#tags-update-story').append(tagsHtml);
+            count++;
+        });
+    });
+    openModal();
+}
+
 $("#update-story-submit").on("keyup", function(event){
     $.ajax({
         type: "PUT",
@@ -153,36 +246,21 @@ $("#update-story-submit").on("keyup", function(event){
         }
     });
 });
-$("#select-tags").on("click", function (event) {
-    $.ajax({
-        type: "GET",
-        url: "/showTags",
-        parseJson: true
-    }).done(function(response) {
-        response = (JSON.parse(response));
-        var options = "";
-        $.each(response.tags, function (key, value) {
-            options += ("<option>"+value.name+"</option>")
-        });
-        $("#select-tags").html(options);
-    });
-});
+
 $("#save-tag").on("click", function (event) {
     event.preventDefault();
     event.stopPropagation();
     var name = $("#save-tag-input").val();
-    console.log(name);
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
     $.ajax({
         type: "POST",
         url: "/tag",
-        data: {name: name, _token: "{{ csrf_token() }}"}
+        data: {name: name}
     }).done(function(response) {
-
+        console.log(response);
     });
-});
-$("#aboutus-menu").on("click", function (event) {
-    $("#aboutus-open-menu").show();
-    /*if($("#aboutus-open-menu").css('display') == 'block')
-        $("#aboutus-open-menu").hide();*/
-
 });

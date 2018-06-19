@@ -32,21 +32,22 @@
 
                         <div class="collapse navbar-collapse" id="navbarColor03">
                             <ul class="navbar-nav mr-auto">
-                                <li class="nav-item @if(Request::is('/'))active @endif">
+                                {{--<li class="nav-item @if(Request::is('/'))active @endif">
                                     <a class="nav-link" href="/">Home</a>
+                                </li>--}}
+                                <li class=" nav-item dropdown-ws  @if(Request::is('aboutus') || Request::is('projectteam'))active @endif">
+                                    <a class="nav-link" href="/aboutus">About
+                                        <i class="fa fa-caret-down"></i>
+                                    </a>
+                                    <div class="dropdown-content-ws">
+                                        <a class="nav-link" href="/projectteam">Project team</a>
+                                    </div>
                                 </li>
                                 <li class="nav-item @if(Request::is('stories'))active @endif">
                                     <a class="nav-link" href="/stories">Stories</a>
                                 </li>
                                 <li class="nav-item @if(Request::is('contactus')) active @endif">
                                     <a class="nav-link" href="/contactus">Contact Us</a>
-                                </li>
-                                <li class="nav-item dropdown @if(Request::is('aboutus'))active @endif">
-                                    <a id="aboutus-menu" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">About Us</a>
-                                    <div id="aboutus-open-menu" class="dropdown-menu" x-placement="bottom-start">
-                                        <a class="nav-link" href="/aboutus">About</a>
-                                        <a class="nav-link" href="#">Another action</a>
-                                    </div>
                                 </li>
                             </ul>
 
@@ -55,12 +56,12 @@
                                 <!-- Authentication Links -->
                                 @if (Auth::user())
                                     <li class="dropdown">
-                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                        <a id="logout-menu" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                             {{ Auth::user()->name }}
                                             <span class="caret"></span>
                                         </a>
 
-                                        <ul class="dropdown-menu" role="menu">
+                                        <ul id="logout-open-menu" class="dropdown-menu" role="menu">
                                             <li>
                                                 <a href="{{ route('logout') }}"
                                                     onclick="event.preventDefault();
@@ -86,10 +87,28 @@
     <div class="footer">
         <div class="row">
             <div id="copy-right" class="col-md-6">
-                <p> Copyright @ 2018 yasaman.bahrami@gmail.com.</p>
+                <p> Copyright @ 2018 Memorial University of Newfoundland.</p>
             </div>
             <div id="copy-right-location" class="col-md-6">
                 <a href="https://www.google.com/maps/search/Newfoundland+and+Labrador+Canada">Newfoundland and Labrador, Canada.</a>
+            </div>
+        </div>
+    </div>
+    <div id="customized-modal" class="modal-w3">
+        <div class="modal-content-w3">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="modal-header-w3">
+                        <span class="close-w3" onclick="closeModal()">&times;</span>
+                        <h3>Welcome to Neighbours</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body-w3">
+                <p> St. John’s, a digital archive of stories from cultural communities in and
+                    around St. John’s, Newfoundland and Labrador. Discover the diversity and richness of our city
+                    through stories from various cultural communities. You can find a story by clicking on the
+                    interactive map, searching stories by keyword, or browsing stories by title.</p>
             </div>
         </div>
     </div>
@@ -98,5 +117,20 @@
 <script src="{{ asset('js/bootstrap.min.js') }}"></script>
 <script src="{{ asset('js/custom.js') }}"></script>
 <script src="{{ asset('js/modal.js') }}"></script>
+<script>
+    $( document ).ready(function() {
+        var isshow = localStorage.getItem('isshow');
+        if (isshow == null) {
+            localStorage.setItem('isshow', 1);
+            openModal();
+        }
+        $("#logout-menu").on("click", function (event) {
+            $("#logout-open-menu").show();
+        });
+        $(document).click( function(){
+            $("#logout-open-menu").hide();
+        });
+    });
+</script>
 </body>
 </html>

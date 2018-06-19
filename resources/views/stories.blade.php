@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="row">
-    <div id="main-bottom" class="col-md-12">
+    <div class="col-md-12">
         <h1>Stories</h1>
         <hr/>
         <div class="row">
@@ -15,6 +15,7 @@
         <div class="row">
             <div class="col-md-12">
                 @if (count($resources) > 0)
+                <div id="main-table-container">
                     <table id= "main-table" class="table fulltable table-striped table-hover table-bordered">
                         <thead class="table-secondary">
                         <tr>
@@ -32,13 +33,13 @@
                         @foreach ($resources as $resource)
                             <tr>
                                 <td class="table-text">
-                                    <div><b>{{ $resource->title }}</b></div>
+                                    <p><b>{{ $resource->title }}</b></p>
                                 </td>
                                 <td class="table-text">
-                                    <div>{{ $resource->summary }}</div>
+                                    <p>{{ $resource->summary }}</p>
                                 </td>
                                 <td class="table-text">
-                                    <div>{{ $resource->bio }}</div>
+                                    <p>{{ $resource->bio }}</p>
                                 </td>
                                 <td>
                                     @if($resource->sound)
@@ -56,13 +57,14 @@
                                 </td>
                                 @if (Auth:: check())
                                 <td>
-                                    <button type="button" class="modal-btn-w3 btn btn-primary update-story" onclick="openModal()"><i class="fa fa-2x fa-edit"></i></button>
+                                    <button type="button" class="modal-btn-w3 btn btn-primary update-story" onclick="openUpdateStoryModal({{$resource}})"><i class="fa fa-2x fa-edit"></i></button>
                                 </td>
                                 @endif
                             </tr>
                         @endforeach
                         </tbody>
                     </table>
+                </div>
                 @endif
             </div>
         </div>
@@ -77,7 +79,7 @@
                         <div class="col-md-12">
                             <div class="modal-header-w3">
                                 <span class="close-w3" onclick="closeModal()">&times;</span>
-                                <p>Update Story</p>
+                                <h3>Update Story</h3>
                             </div>
                         </div>
                     </div>
@@ -128,35 +130,18 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="yearOfStory">Year of Story</label>
-                                        <input class="form-control" id="yearOfStory">
+                                        <label for="timeOfStory">Time of Story</label>
+                                        <input class="form-control" id="timeOfStory">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="yearOfInterview">Year of Interview</label>
-                                        <input class="form-control" id="yearOfInterview">
+                                        <label for="attributes">Attributes</label>
+                                        <input class="form-control" id="attributes">
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="tags">Tags</label>
-                                        <select class="form-control selectpicker" id="select-tags" data-live-search="true">
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="input-group add-new-tag">
-                                        <input id="save-tag-input" class="form-control" type="text" placeholder="Enter A New Tag">
-                                        <div class="input-group-append">
-                                            <button id="save-tag" class="btn btn-success input-group-text" style="background: #2A4A6A">
-                                                Save New Tag
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div id="tags-update-story" class="row">
                             </div>
                             <div class="row">
                                 <div class="col-md-6">

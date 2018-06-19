@@ -56,8 +56,11 @@ class ResourceController extends Controller
     }
     public function storeTag(Request $request )
     {
-        var_dump($request);
-        //$this->tags->storeTag("dsd");
+        $this->tags->storeTag($request->name);
+        $response = [
+            'status' => 'success'
+        ];
+        return $response;
     }
 
     public function update(Request $request, Resource $resource)
