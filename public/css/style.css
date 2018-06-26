@@ -32,7 +32,7 @@ h1,h2,h3{
 #main-table {
 }
 #main-table-container {
-	border-radius: 4px 0px 4px 4px;
+	border-radius: 4px;
 	overflow: hidden;
 }
 #map {
@@ -41,6 +41,10 @@ h1,h2,h3{
 	background-color: grey;
 	position: absolute;
 	border: 1px #CED4DA  solid;
+}
+.tags {
+    padding-top: 7px;
+    padding-bottom: 7px;
 }
 #tags-table {
 	height: 438px;
@@ -68,7 +72,7 @@ h1,h2,h3{
 	z-index: 10000;
 	padding: 10px;
 	height: 500px;
-	width: 20%;
+	width: 25%;
 	color: #F7F3EE;
 	border-bottom-left-radius: 5px;
 	border-top-left-radius: 5px;
@@ -129,10 +133,6 @@ h1,h2,h3{
 	display: none;
 	color: #33739E;
 }
-#download-pdf {
-	float: right;
-	border-radius: 3px 3px 0px 0px;
-}
 .footer {
 	position: fixed;
 	bottom: 0;
@@ -156,7 +156,7 @@ h1,h2,h3{
 	border-radius: 3px;
 	overflow: hidden;
 	width: 300px;
-	height: 32px;
+	height: 60px;
 }
 .aboutus-text {
 	text-align: justify;
@@ -197,3 +197,4 @@ h1,h2,h3{
 .dropdown-ws:hover .dropdown-content-ws {
 	display: block;
 }
+

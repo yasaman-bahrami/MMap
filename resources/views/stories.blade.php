@@ -7,13 +7,6 @@
         <hr/>
         <div class="row">
             <div class="col-md-12">
-                <a id="download-pdf" href="/resources/NeighboursTS-MF-7May2018.pdf" target="_blank" class="btn btn-primary" download>
-                    <i class="fa fa-2x fa-download"></i> Download Stories
-                </a>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
                 @if (count($resources) > 0)
                 <div id="main-table-container">
                     <table id= "main-table" class="table fulltable table-striped table-hover table-bordered">
@@ -43,7 +36,7 @@
                                 </td>
                                 <td>
                                     @if($resource->sound)
-                                        <audio style="width: 100%" controls>
+                                        <audio controls controlsList="nodownload">
                                             <source id="audio-src" type="audio/mp3" src="/sounds/{{$resource->sound}}"/>
                                         </audio>
                                     @endif

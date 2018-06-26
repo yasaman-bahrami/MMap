@@ -8,7 +8,7 @@
             <button type="button" class="close" data-dismiss="info" onclick="hideInfo();">&times;</button>
             <div id="info-title"></div>
             <p id="info-body"></p>
-            <audio id="audio-src" style="width: 100%" controls>
+            <audio id="audio-src" style="width: 100%" controls controlsList="nodownload">
                 <source type="audio/mp3" src=""/>
             </audio>
         </div>
@@ -33,7 +33,7 @@
                         @foreach ($tags as $tag)
                             <tr>
                                 <!-- Tag Name -->
-                                <td class="btn btn-primary tags">
+                                <td class="badge badge-pill badge-primary tags">
                                     {{ $tag->name }}
                                 </td>
                             </tr>
@@ -78,7 +78,7 @@
                 <div class="col-md-3" style="display: inline-block">
                     @if($resource->sound)
                     <div class="audio-div">
-                        <audio controls>
+                        <audio controls controlsList="nodownload">
                             <source src="sounds/{{ $resource->sound }}" type="audio/mpeg">
                         </audio>
                     </div>

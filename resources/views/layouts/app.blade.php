@@ -25,7 +25,7 @@
             <div class="row">
                 <div id="main" class="col-md-12">
                     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                        <a class="navbar-brand" href="/"><img src="img/logo.jpg" alt="logo" width="auto" height="55"></a>
+                        <a class="navbar-brand" href="/"><img src="img/logo.jpg" alt="logo" width="auto" height="55" style="border-radius: 3px"></a>
                         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
                             <span class="navbar-toggler-icon"></span>
                         </button>
@@ -44,7 +44,7 @@
                                     </div>
                                 </li>
                                 <li class="nav-item @if(Request::is('stories'))active @endif">
-                                    <a class="nav-link" href="/stories">Stories</a>
+                                    <a class="nav-link" href="/stories">Story List</a>
                                 </li>
                                 <li class="nav-item @if(Request::is('contactus')) active @endif">
                                     <a class="nav-link" href="/contactus">Contact Us</a>
@@ -100,12 +100,12 @@
                 <div class="col-md-12">
                     <div class="modal-header-w3">
                         <span class="close-w3" onclick="closeModal()">&times;</span>
-                        <h3>Welcome to Neighbours</h3>
+                        <h3>Neighbours: St. John's</h3>
                     </div>
                 </div>
             </div>
             <div class="modal-body-w3">
-                <p> St. John’s, a digital archive of stories from cultural communities in and
+                <p> Welcome to Neighbours St. John’s, a digital archive of stories from cultural communities in and
                     around St. John’s, Newfoundland and Labrador. Discover the diversity and richness of our city
                     through stories from various cultural communities. You can find a story by clicking on the
                     interactive map, searching stories by keyword, or browsing stories by title.</p>
