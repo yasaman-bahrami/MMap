@@ -152,9 +152,7 @@
                             </div>
                         </form>
                     </div>
-                    <div class="modal-footer-w3">
-                        <button id="update-story-submit" type="button" class="btn btn-primary">Save changes</button>
-                        <button type="button" class="btn btn-secondary" onclick="closeModal()">Close</button>
+                    <div class="modal-footer-w3" id="editStoryBtnPanel">
                     </div>
                 </div>
             </div>

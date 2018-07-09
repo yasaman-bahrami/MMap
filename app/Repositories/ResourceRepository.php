@@ -83,4 +83,33 @@ class ResourceRepository
 
     }
 
+    public function updateStory($request)
+    {
+        $resource = $this->getResourceById($request->id);
+        $resource->title = $request->title;
+        $resource->notes = $request->notes;
+        $resource->bio = $request->bio;
+        $resource->summary = $request->summary;
+        $resource->storyTeller = $request->storyTeller;
+        $resource->interviewer = $request->interviewer;
+        $resource->timeOfStory = $request->timeOfStory;
+        $resource->attributes = $request->attributes;
+        $resource->latitude = $request->latitude;
+        $resource->longitude = $request->longitude;
+        $resource->save();
+        $tags = $request->tags;
+        foreach ($tags as $tag)
+        {
+            $resource->tags()->attach($tag->id);
+        }
+        $oldTags = $request->oldTags;
+        info("-------------------"+$oldTags);
+        foreach ($oldTags as $oldTag)
+        {
+            if(isset($oldTag))
+                info($oldTag);
+                $resource->tags()->detach((int)$oldTag);
+        }
+    }
+
 }

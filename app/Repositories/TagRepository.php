@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: yasaman.samani
- * Date: 2018-02-06
- * Time: 1:50 PM
- */
 
 namespace App\Repositories;
 

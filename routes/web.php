@@ -28,7 +28,7 @@ Route::get('/', 'ResourceController@index');
     Route::get('/stories', 'ResourceController@showStories');
     Route::get('/showTags', 'ResourceController@showTags');
     Route::get('/resourcesByTags', 'ResourceController@getResourcesByTags');
-    Route::put('/resource', 'ResourceController@update');
+    Route::post('/updateResource', 'ResourceController@updateResource');
     Route::post('/tag', 'ResourceController@storeTag');
     Route::get('/contactus', function() {
         return view('contactus');
@@ -38,6 +38,9 @@ Route::get('/', 'ResourceController@index');
     });
     Route::get('/projectteam', function() {
         return view('projectteam');
+    });
+    Route::get('/portfolio', function() {
+        return view('portfolio');
     });
 
     //Tags Routes

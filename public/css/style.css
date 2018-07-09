@@ -197,4 +197,7 @@ h1,h2,h3{
 .dropdown-ws:hover .dropdown-content-ws {
 	display: block;
 }
+.portfolio-a {
+	color: #2a4a6a;
+}
 

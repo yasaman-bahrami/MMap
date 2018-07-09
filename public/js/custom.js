@@ -206,7 +206,10 @@ function openUpdateStoryModal(story) {
         '</div>';
     $('#tags-update-story').append(addNewTagHtml);
     var count = 1;
+    var oldTags = "";
+
     $.each(story.tags,function (key,value) {
+        oldTags += value.id+"-";
         $.ajax({
             type: "GET",
             url: "/showTags",
@@ -223,7 +226,7 @@ function openUpdateStoryModal(story) {
             tagsHtml = '<div class="col-md-2">' +
                 '<div class="form-group">' +
                 '<label for="tags">Tag'+count+'</label>' +
-                '<select class="form-control selectpicker select-tags" id="select-tags-'+value.id+'" data-live-search="true">' +
+                '<select class="form-control selectpicker select-tags" id="select-tags-'+count+'" data-live-search="true">' +
                 tagOptions +
                 '</select>' +
                 '</div>' +
@@ -233,19 +236,79 @@ function openUpdateStoryModal(story) {
             count++;
         });
     });
+    if(story.tags.length !== 9) {
+        $.ajax({
+            type: "GET",
+            url: "/showTags",
+            parseJson: true
+        }).done(function(response) {
+            response = (JSON.parse(response));
+            responseTags = response.tags;
+            $.each(responseTags, function (tagKey, tagValue) {
+                tagOptions += ("<option>"+tagValue.name+"</option>")
+            });
+
+            tagsHtml = '<div class="col-md-2">' +
+                '<div class="form-group">' +
+                '<label for="tags">Tag'+count+'</label>' +
+                '<select class="form-control selectpicker select-tags" id="select-tags-9" data-live-search="true">' +
+                tagOptions +
+                '</select>' +
+                '</div>' +
+                '</div>';
+
+            $('#tags-update-story').append(tagsHtml);
+        });
+    }
+
+    var EditBtnPanel = '<button id="update-story-submit" type="button" class="btn btn-primary" onclick=\"updateResource('+story.id+',\''+oldTags+'\')\">Save changes</button>'+
+    '<button type="button" class="btn btn-secondary" onclick="closeModal()">Close</button>';
+    $('#editStoryBtnPanel').empty();
+    $('#editStoryBtnPanel').append(EditBtnPanel);
     openModal();
 }
 
-$("#update-story-submit").on("keyup", function(event){
-    $.ajax({
-        type: "PUT",
-        url: "/resource",
-        data: { name:name, message:message, post_id:postid },
-        success: function( msg ) {
-            alert( msg );
+function updateResource(storyId, oldTags) {
+    oldTags = oldTags.split("-");
+    data = {
+        id: storyId,
+        title: $('#title').val(),
+        notes: $('#notes').val(),
+        bio: $('#bio').val(),
+        summary: $('#summary').val(),
+        storyTeller: $('#storyTeller').val(),
+        interviewer: $('#interviewer').val(),
+        timeOfStory: $('#timeOfStory').val(),
+        attributes: $('#attributes').val(),
+        latitude: $('#latitude').val(),
+        longitude: $('#longitude').val(),
+        tags :{
+            tag1: $('#select-tags-1').val(),
+            tag2: $('#select-tags-2').val(),
+            tag3: $('#select-tags-3').val(),
+            tag4: $('#select-tags-4').val(),
+            tag5: $('#select-tags-5').val(),
+            tag6: $('#select-tags-6').val(),
+            tag7: $('#select-tags-7').val(),
+            tag8: $('#select-tags-8').val(),
+            tag9: $('#select-tags-9').val()
+        },
+        oldTags : oldTags
+    };
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
-});
+    $.ajax({
+        type: "POST",
+        url: "/updateResource",
+        data: data,
+        success: function( msg ) {
+            console.log( msg );
+        }
+    });
+};
 
 $("#save-tag").on("click", function (event) {
     event.preventDefault();
@@ -264,3 +327,8 @@ $("#save-tag").on("click", function (event) {
         console.log(response);
     });
 });
+function openEmbededPDF(chapter) {
+    var pdfDiv = "<object width='700' height='600' data='pdf/"+chapter+".pdf'></object>";
+    console.log(pdfDiv);
+    $('#pdfDiv').append(pdfDiv);
+}

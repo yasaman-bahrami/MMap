@@ -63,26 +63,13 @@ class ResourceController extends Controller
         return $response;
     }
 
-    public function update(Request $request, Resource $resource)
+    public function updateResource(Request $request)
     {
-        $this->authorize('store', $resource);
-
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|max:255',
-        ]);
-
-        if ($validator->fails()) {
-            return redirect('/')
-                ->withInput()
-                ->withErrors($validator);
-        }
-
-
-        $request->user()->resources()->create([
-            'name' => $request->name,
-        ]);
-
-        return redirect('/resources');
+        $this->resources->updateStory($request);
+        $response = [
+            'status' => 'success'
+        ];
+        return $response;
     }
 
 }
