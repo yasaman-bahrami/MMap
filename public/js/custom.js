@@ -108,18 +108,18 @@ $('#story-container .story-item h2').click(function(e){
     });
 });
 
-$( ".tags" ).click(function() {
+function showResourcesOnTheMap(buttonObject) {
     var tagInput = $("#tag-search-input");
+    var currentVal = tagInput.val();
     if(tagInput.val() === ""){
         tagInput.focus();
-        tagInput.val(this.innerText);
+        tagInput.val(buttonObject.innerText);
     } else {
-        tagInput.val($("#tag-search-input").val() +","+ this.innerText+",");
+        tagInput.val( currentVal + "," + buttonObject.innerText+",");
     }
     var tagsList = tagInput.val().split(",");
     getResourceByTagList(tagsList);
-
-});
+}
 
 $("#story-search-input").on("keyup", function() {
     var value = $(this).val().toLowerCase();
@@ -269,19 +269,33 @@ function openUpdateStoryModal(story) {
 }
 
 function updateResource(storyId, oldTags) {
+    var latitude = $('#latitude').val();
+    var longitude = $('#longitude').val();
+    var title = $('#title').val();
+    var notes = $('#notes').val();
+    var bio = $('#bio').val();
+    var summary = $('#summary').val();
+    var storyTeller = $('#storyTeller').val();
+    var interviewer = $('#interviewer').val();
+    var timeOfStory = $('#timeOfStory').val();
+    var attributes = $('#attributes').val();
+    if (!latitude || !longitude || !title || !notes || !bio || !summary || !storyTeller || !interviewer || !timeOfStory || !attributes) {
+        alert("All the fields are required.");
+        return;
+    }
     oldTags = oldTags.split("-");
     data = {
         id: storyId,
-        title: $('#title').val(),
-        notes: $('#notes').val(),
-        bio: $('#bio').val(),
-        summary: $('#summary').val(),
-        storyTeller: $('#storyTeller').val(),
-        interviewer: $('#interviewer').val(),
-        timeOfStory: $('#timeOfStory').val(),
-        attributes: $('#attributes').val(),
-        latitude: $('#latitude').val(),
-        longitude: $('#longitude').val(),
+        title: title,
+        notes: notes,
+        bio: bio,
+        summary: summary,
+        storyTeller: storyTeller,
+        interviewer: interviewer,
+        timeOfStory: timeOfStory,
+        attributes: attributes,
+        latitude: latitude,
+        longitude: longitude,
         tags :{
             tag1: $('#select-tags-1').val(),
             tag2: $('#select-tags-2').val(),
@@ -300,11 +314,17 @@ function updateResource(storyId, oldTags) {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
+    console.log(data);
     $.ajax({
         type: "POST",
         url: "/updateResource",
         data: data,
+        dataType: "json",
+        parseJson: true,
         success: function( msg ) {
+            if (msg.status === 'success') {
+                location.reload();
+            }
             console.log( msg );
         }
     });
@@ -328,7 +348,7 @@ $("#save-tag").on("click", function (event) {
     });
 });
 function openEmbededPDF(chapter) {
-    var pdfDiv = "<object width='700' height='600' data='pdf/"+chapter+".pdf'></object>";
-    console.log(pdfDiv);
+    var pdfDiv = "<object width='700' height='700' data='pdf/"+chapter+".pdf'></object>";
+    $('#pdfDiv').empty();
     $('#pdfDiv').append(pdfDiv);
 }

@@ -21,7 +21,7 @@ class ResourceRepository
 {
     public function getAll()
     {
-        return Resource::with('tags')->get();
+        return Resource::with('tags')->orderBy('pagerank', 'desc')->get();
     }
 
     public function getRelatedResourcesPageRanked($searchTerm = '')
@@ -87,29 +87,29 @@ class ResourceRepository
     {
         $resource = $this->getResourceById($request->id);
         $resource->title = $request->title;
-        $resource->notes = $request->notes;
+        $resource->notes2 = $request->notes;
         $resource->bio = $request->bio;
         $resource->summary = $request->summary;
         $resource->storyTeller = $request->storyTeller;
         $resource->interviewer = $request->interviewer;
-        $resource->timeOfStory = $request->timeOfStory;
-        $resource->attributes = $request->attributes;
+        $resource->time_of_story = $request->timeOfStory;
+        $resource->attribute1 = $request->input('attributes');
         $resource->latitude = $request->latitude;
         $resource->longitude = $request->longitude;
         $resource->save();
         $tags = $request->tags;
-        foreach ($tags as $tag)
-        {
-            $resource->tags()->attach($tag->id);
-        }
+
         $oldTags = $request->oldTags;
-        info("-------------------"+$oldTags);
         foreach ($oldTags as $oldTag)
         {
             if(isset($oldTag))
                 info($oldTag);
-                $resource->tags()->detach((int)$oldTag);
+            $resource->tags()->detach((int)$oldTag);
+        }
+        foreach ($tags as $tag)
+        {
+            $tagId = Tag::where('name', $tag)->first()->id;
+            $resource->tags()->attach($tagId);
         }
     }
-
 }

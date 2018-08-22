@@ -140,13 +140,13 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="latitude">Latitude</label>
-                                        <input class="form-control" id="latitude">
+                                        <input required class="form-control" id="latitude">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="longitude">Longitude</label>
-                                        <input class="form-control" id="longitude">
+                                        <input required class="form-control" id="longitude">
                                     </div>
                                 </div>
                             </div>

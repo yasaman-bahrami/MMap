@@ -12,6 +12,11 @@ class TagRepository
         return Tag::orderBy('name', 'asc')->get();
     }
 
+    public function getTagByName($name)
+    {
+        return Tag::where('name', $name)->first();
+    }
+
     public function storeTag($name)
     {
         $tag = new Tag();

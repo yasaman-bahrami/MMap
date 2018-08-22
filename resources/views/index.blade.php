@@ -19,6 +19,9 @@
                 @if (count($tags) > 0)
                 <div class="form-group">
                     <div class="input-group mb-3">
+                        <p style="font-size: 10px; text-align: justify;">
+                            Please use commas to separate tags to search through the stories.
+                        </p>
                         <input id="tag-search-input" type="text" class="form-control" placeholder="Search Tags" onChange="handleTagInputChange()">
                         <div class="input-group-append">
                             <button class=" btn input-group-text">
@@ -33,7 +36,7 @@
                         @foreach ($tags as $tag)
                             <tr>
                                 <!-- Tag Name -->
-                                <td class="badge badge-pill badge-primary tags">
+                                <td class="badge badge-pill badge-primary tags" onclick="showResourcesOnTheMap(this);">
                                     {{ $tag->name }}
                                 </td>
                             </tr>

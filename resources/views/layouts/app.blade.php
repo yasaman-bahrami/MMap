@@ -46,8 +46,9 @@
                                 <li class="nav-item @if(Request::is('stories'))active @endif">
                                     <a class="nav-link" href="/stories">Story List</a>
                                 </li>
+                                {{--to activate the portfolio page, please uncomment the below three lines.--}}
                                 <li class="nav-item @if(Request::is('portfolio'))active @endif">
-                                    <a class="nav-link" href="/portfolio">Portfolio</a>
+                                    <a class="nav-link" href="/portfolio">Neighbours Project E-book</a>
                                 </li>
                                 <li class="nav-item @if(Request::is('contactus')) active @endif">
                                     <a class="nav-link" href="/contactus">Contact Us</a>
@@ -98,7 +99,7 @@
         </div>
     </div>
     <div id="customized-modal" class="modal-w3">
-        <div class="modal-content-w3">
+        <div class="modal-content-w3" style="height: 200px;">
             <div class="row">
                 <div class="col-md-12">
                     <div class="modal-header-w3">
@@ -107,8 +108,8 @@
                     </div>
                 </div>
             </div>
-            <div class="modal-body-w3">
-                <p> Welcome to Neighbours St. John’s, a digital archive of stories from cultural communities in and
+            <div class="modal-body-w3" >
+                <p style="font-size: 18px"> Welcome to Neighbours St. John’s, a digital archive of stories from cultural communities in and
                     around St. John’s, Newfoundland and Labrador. Discover the diversity and richness of our city
                     through stories from various cultural communities. You can find a story by clicking on the
                     interactive map, searching stories by keyword, or browsing stories by title.</p>
@@ -123,10 +124,18 @@
 <script>
     $( document ).ready(function() {
         var isshow = localStorage.getItem('isshow');
+        console.log(isshow);
         if (isshow == null) {
             localStorage.setItem('isshow', 1);
             openModal();
         }
+        /*else {
+            if( isshow < 9 ){
+                isshow = parseInt(isshow) + parseInt(1);
+                localStorage.setItem('isshow', isshow);
+                openModal();
+            }
+        }*/
         $("#logout-menu").on("click", function (event) {
             $("#logout-open-menu").show();
         });
