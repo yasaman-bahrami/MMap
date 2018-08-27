@@ -118,6 +118,19 @@
 
     initMap(resources);
     $( document ).ready(function() {
+        var isshow = localStorage.getItem('isshow');
+        console.log(isshow);
+        if (isshow == null) {
+            localStorage.setItem('isshow', 1);
+            openModal();
+        }
+        else {
+            if( isshow < 9 ){
+                isshow = parseInt(isshow) + parseInt(1);
+                localStorage.setItem('isshow', isshow);
+                openModal();
+            }
+        }
         $(".story-item").slice(0, 4).show();
         $("#load-more").on('click', function (e) {
             e.preventDefault();

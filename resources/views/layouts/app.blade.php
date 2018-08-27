@@ -123,19 +123,6 @@
 <script src="{{ asset('js/modal.js') }}"></script>
 <script>
     $( document ).ready(function() {
-        var isshow = localStorage.getItem('isshow');
-        console.log(isshow);
-        if (isshow == null) {
-            localStorage.setItem('isshow', 1);
-            openModal();
-        }
-        /*else {
-            if( isshow < 9 ){
-                isshow = parseInt(isshow) + parseInt(1);
-                localStorage.setItem('isshow', isshow);
-                openModal();
-            }
-        }*/
         $("#logout-menu").on("click", function (event) {
             $("#logout-open-menu").show();
         });
