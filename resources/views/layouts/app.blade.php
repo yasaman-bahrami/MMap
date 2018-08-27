@@ -47,9 +47,9 @@
                                     <a class="nav-link" href="/stories">Story List</a>
                                 </li>
                                 {{--to activate the portfolio page, please uncomment the below three lines.--}}
-                                <li class="nav-item @if(Request::is('portfolio'))active @endif">
+                                {{--<li class="nav-item @if(Request::is('portfolio'))active @endif">
                                     <a class="nav-link" href="/portfolio">Neighbours Project E-book</a>
-                                </li>
+                                </li>--}}
                                 <li class="nav-item @if(Request::is('contactus')) active @endif">
                                     <a class="nav-link" href="/contactus">Contact Us</a>
                                 </li>
